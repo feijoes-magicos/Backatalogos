@@ -1,10 +1,9 @@
-import express, {Express, RequestHandler } from 'express'
+import express, {Express, IRouter, RequestHandler } from 'express'
 
-interface App {
+type ExpressMidlewareFirstParam = string | RequestHandler | IRouter;
+
+class App {
 	app:Express
-}
-
-class App implements App {
 	constructor () {
 		this.app = express()
 	}
@@ -13,12 +12,16 @@ class App implements App {
 			console.log('Aplicativo operante na porta '+value)
 		})
 	}
-	setMiddleware(middleware:RequestHandler, prefix?:string) {
-		if(prefix){
-			this.app.use(prefix,middleware)
+
+	//overloading de métodos destinado as diferentes implementações que podem ser usadas no método use do express
+	setMiddleware(pathName:string, ...handlers:(RequestHandler|IRouter)[]):void
+	setMiddleware(...handlers:(RequestHandler|IRouter)[]):void
+	setMiddleware(eitherPathHandler:ExpressMidlewareFirstParam, ...handlers:(RequestHandler|IRouter)[]){
+		if(typeof eitherPathHandler === 'string' && !!handlers){
+			this.app.use(eitherPathHandler, ...handlers)
 			return
 		}
-		this.app.use(middleware)
+		this.app.use(...handlers)
 	}
 }
 

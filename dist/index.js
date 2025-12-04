@@ -9,5 +9,5 @@ const routes_1 = __importDefault(require("./routes"));
 dotenv_1.default.config();
 const { APP_PORT } = process.env;
 const app = new app_1.default();
-app.setMiddleware(routes_1.default, '/');
+app.setMiddleware('/', routes_1.default);
 app.listen(Number(APP_PORT));

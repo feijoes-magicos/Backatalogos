@@ -13,12 +13,12 @@ class App {
             console.log('Aplicativo operante na porta ' + value);
         });
     }
-    setMiddleware(middleware, prefix) {
-        if (prefix) {
-            this.app.use(prefix, middleware);
+    setMiddleware(eitherPathHandler, ...handlers) {
+        if (typeof eitherPathHandler === 'string' && !!handlers) {
+            this.app.use(eitherPathHandler, ...handlers);
             return;
         }
-        this.app.use(middleware);
+        this.app.use(...handlers);
     }
 }
 exports.default = App;
