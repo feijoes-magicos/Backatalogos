@@ -1,9 +1,8 @@
 import {IRouter, Router} from 'express'
+import ProductsController from 'controllers/products';
 
 const router:IRouter = Router();
 
-router.get('/', (_, res)=>{
-	res.send({message:'API TA RUNFANDO'})
-})
+router.get('/', ProductsController.getProducts)
 
 export default router;
